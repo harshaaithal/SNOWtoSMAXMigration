@@ -3,8 +3,8 @@
     "Pword": "Smax_Snow_2020",
     "HostName":"btp-smax-poc-master.hpeswlab.net",
     "TenantId":"238107612",
-    "EndopointURL": "https://btp-smax-poc-master.hpeswlab.net/rest/238107612/ems/bulk",
-    "AuthURL":"https://btp-smax-poc-master.hpeswlab.net/auth/authentication-endpoint/authenticate/login?TENANTID=238107612",
+    "EndopointURL": "",
+    "AuthURL":"",
     "SmaxEntity": "Incident",
     "CertFilePath":"./data/smax.cer"
 }

@@ -6,17 +6,41 @@ var logWriter = Logger();
 String logFileName;
 var snowConfig = Snow();
 var smaxConfig = Smax();
+var mappingConfig = Mapping();
+
+class Mapping {
+  var jsonVals;
+
+  void readFromFile() {
+    try {
+      jsonVals = File('./data/mapping.json').readAsStringSync();
+      jsonVals = jsonDecode(jsonVals);
+      logWriter.writeLog(
+          logFileName, 'Mapping', 'Mapping file loaded\n $jsonVals');
+    } catch (e) {
+      logWriter.writeLog(logFileName, 'Mapping',
+          'ERROR : Error reading Mapping file \n ${e.message.toString()}');
+    }
+  }
+
+  void printVals() {
+    print(jsonVals['impact']['1']);
+  }
+}
 
 class Snow {
-  String uname, password, endpointUrl, snowModule;
+  String uname, password, endpointUrl, snowModule, hostName, query;
   void readFromFile() {
     try {
       String comFile = File('./data/snow.json').readAsStringSync();
       var comFileJson = jsonDecode(comFile);
       uname = comFileJson['Uname'];
       password = comFileJson['Pword'];
-      endpointUrl = comFileJson['EndopointURL'];
+      //endpointUrl = comFileJson['EndopointURL'];
       snowModule = comFileJson['ModuleName'];
+      hostName = comFileJson['HostName'];
+      query = comFileJson['Query'];
+      endpointUrl = 'https://$hostName/api/now/table/$snowModule?$query';
       logWriter.writeLog(logFileName, 'SNOW Config Init',
           'SNOW ${comFile} Configuration Loaded successfully');
       print('SNOW snow.json Configuration Loaded successfully');
@@ -29,7 +53,14 @@ class Snow {
 }
 
 class Smax {
-  String uname, password, endpointUrl, authUrl, smaxEntity, certFilePath;
+  String uname,
+      password,
+      hostName,
+      tenantId,
+      endpointUrl,
+      authUrl,
+      smaxEntity,
+      certFilePath;
   String authCookie;
   void readFromFile() {
     try {
@@ -37,8 +68,13 @@ class Smax {
       var comFileJson = jsonDecode(comFile);
       uname = comFileJson['Uname'];
       password = comFileJson['Pword'];
-      endpointUrl = comFileJson['EndopointURL'];
-      authUrl = comFileJson['AuthURL'];
+      //endpointUrl = comFileJson['EndopointURL'];
+      hostName = comFileJson['HostName'];
+      tenantId = comFileJson['TenantId'];
+      endpointUrl = 'https://$hostName/rest/$tenantId/ems/bulk';
+      authUrl =
+          'https://$hostName/auth/authentication-endpoint/authenticate/login?TENANTID=$tenantId';
+      //authUrl = 'https://$hostName/rest/$tenantId/ems/bulk';
       smaxEntity = comFileJson['SmaxEntity'];
       certFilePath = comFileJson['CertFilePath'];
       logWriter.writeLog(logFileName, 'SMAX Config Init',
@@ -120,11 +156,14 @@ void main(List<String> arguments) {
 
   smaxConfig.readFromFile();
 
-  //5. Reading SMAX Auth
+  //5. Loading the mapping file
+  mappingConfig.readFromFile();
+
+  //6. Reading SMAX Auth
 
   setSMAXAuth();
 
-  //6. Execute SNOW to SMAX
+  //7. Execute SNOW to SMAX
   snowToSMAXExecute();
 }
 
@@ -145,7 +184,8 @@ void snowToSMAXExecute() async {
       //print(snowResponse['result'].length );
       logWriter.writeLog(logFileName, 'SNOW',
           "Fetched :${snowResponse['result'].length} tickets");
-      print("Fetched :${snowResponse['result'].length} tickets (${snowConfig.endpointUrl})");
+      print(
+          "Fetched :${snowResponse['result'].length} tickets (${snowConfig.endpointUrl})");
       for (var item in snowResponse['result']) {
         //print('${item['number']} ${item['state']} ${item['impact']}');
         print('Processing ticket ${item['number']}');
@@ -158,7 +198,7 @@ void snowToSMAXExecute() async {
               'properties': {
                 'RegisteredForActualService': '11359',
                 //TO-DO Fetch service
-                'DisplayLabel': '${item['short_description'] }',
+                'DisplayLabel': '${item['short_description']}',
                 'Description': '<p>${item['description']}</p>',
                 'DetectedEntities': '{\'complexTypeProperties\':[]}',
                 'UserOptions':
@@ -186,26 +226,33 @@ void setSMAXAuth() async {
   context.setTrustedCertificates(smaxConfig.certFilePath);
   var smaxHttpClient = new HttpClient(context: context);
 
-  HttpClientRequest request =
-      await smaxHttpClient.postUrl(Uri.parse(smaxConfig.authUrl));
-  var payload = {
-    'Login': '${smaxConfig.uname}',
-    'Password': '${smaxConfig.password}',
-  };
-  request.write(json.encode(payload));
-  HttpClientResponse response = await request.close();
-  if (response.statusCode == 200) {
-    var authToken = await response.transform(utf8.decoder).join();
-    smaxConfig.authCookie = authToken;
-    print('SMAX Auth Successfull');
-    logWriter.writeLog(
-        logFileName, 'SMAX', 'SMAX Auth Successfull: Token \n ${authToken} ');
-  } else {
-    var erMsg = await response.transform(utf8.decoder).join();
-    print(
-        'ERROR SMAX Auth Error: Status Code ${response.statusCode} Message \n ${erMsg} ');
+  try {
+    HttpClientRequest request =
+        await smaxHttpClient.postUrl(Uri.parse(smaxConfig.authUrl));
+    var payload = {
+      'Login': '${smaxConfig.uname}',
+      'Password': '${smaxConfig.password}',
+    };
+    request.write(json.encode(payload));
+    HttpClientResponse response = await request.close();
+    if (response.statusCode == 200) {
+      var authToken = await response.transform(utf8.decoder).join();
+      smaxConfig.authCookie = authToken;
+      print('SMAX Auth Successfull');
+      logWriter.writeLog(
+          logFileName, 'SMAX', 'SMAX Auth Successfull: Token \n ${authToken} ');
+    } else {
+      var erMsg = await response.transform(utf8.decoder).join();
+      print(
+          'ERROR SMAX Auth Error: Status Code ${response.statusCode} Message \n ${erMsg} ');
+      logWriter.writeLog(logFileName, 'SMAX',
+          'ERROR SMAX Auth Error: Status Code ${response.statusCode} Message \n ${erMsg} ');
+    }
+  } catch (e) {
     logWriter.writeLog(logFileName, 'SMAX',
-        'ERROR SMAX Auth Error: Status Code ${response.statusCode} Message \n ${erMsg} ');
+        'ERROR SMAX Create Bulk Error: Exception Occured \n ${e.toString()} ');
+    print(
+        'ERROR SMAX Create Bulk Error: Exception Occured \n ${e.toString()} ');
   }
 }
 
@@ -213,24 +260,29 @@ void sendToSMAX(payload) async {
   SecurityContext context = new SecurityContext();
   context.setTrustedCertificates(smaxConfig.certFilePath);
   var smaxHttpClient = new HttpClient(context: context);
-
-  HttpClientRequest request =
-      await smaxHttpClient.postUrl(Uri.parse(smaxConfig.endpointUrl));
-
-  request.headers.set('Cookie', 'LWSSO_COOKIE_KEY=${smaxConfig.authCookie}');
-  request.write(payload);
-  HttpClientResponse response = await request.close();
-  if (response.statusCode == 200) {
-    var responseJson = await response.transform(utf8.decoder).join();
-    smaxConfig.authUrl = responseJson;
-    print('SMAX Create Bulk Successfull');
+  try {
+    HttpClientRequest request =
+        await smaxHttpClient.postUrl(Uri.parse(smaxConfig.endpointUrl));
+    request.headers.set('Cookie', 'LWSSO_COOKIE_KEY=${smaxConfig.authCookie}');
+    request.write(payload);
+    HttpClientResponse response = await request.close();
+    if (response.statusCode == 200) {
+      var responseJson = await response.transform(utf8.decoder).join();
+      smaxConfig.authUrl = responseJson;
+      print('SMAX Create Bulk Successfull');
+      logWriter.writeLog(logFileName, 'SMAX',
+          'SMAX Create Bulk Successfull: Response JSON \n ${responseJson} ');
+    } else {
+      var erMsg = await response.transform(utf8.decoder).join();
+      print(
+          'ERROR SMAX Create Bulk Error: Status Code ${response.statusCode} Message \n ${erMsg} ');
+      logWriter.writeLog(logFileName, 'SMAX',
+          'ERROR SMAX Create Bulk Error: Status Code ${response.statusCode} Message \n ${erMsg} ');
+    }
+  } catch (e) {
     logWriter.writeLog(logFileName, 'SMAX',
-        'SMAX Create Bulk Successfull: Response JSON \n ${responseJson} ');
-  } else {
-    var erMsg = await response.transform(utf8.decoder).join();
+        'ERROR SMAX Create Bulk Error: Exception Occured \n ${e.toString()} ');
     print(
-        'ERROR SMAX Create Bulk Error: Status Code ${response.statusCode} Message \n ${erMsg} ');
-    logWriter.writeLog(logFileName, 'SMAX',
-        'ERROR SMAX Create Bulk Error: Status Code ${response.statusCode} Message \n ${erMsg} ');
+        'ERROR SMAX Create Bulk Error: Exception Occured \n ${e.toString()} ');
   }
 }
