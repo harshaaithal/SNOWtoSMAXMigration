@@ -1,0 +1,6 @@
+{
+    "Uname": "admin",
+    "Pword": "nJLh8WnavLJ6",
+    "EndopointURL": "https://dev102213.service-now.com/api/now/table/incident?sysparm_fields=number%2Cstate%2Cdescription%2Cshort_description%2Cimpact%2Curgency&sysparm_limit=10",
+    "ModuleName": "incident"
+}

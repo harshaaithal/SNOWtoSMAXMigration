@@ -1,0 +1,5 @@
+Date/Time,	Mapping,	Message
+2020-04-12 20:57:40.494036,	Init,	common.json file loaded
+    "LogFileRotationEnable": true
+}
+2020-04-12 20:57:40.510035,	Init,	logFileName=./log/SNOWtoSMAXTrail.log

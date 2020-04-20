@@ -1,0 +1,4 @@
+{
+    "LogFileName": "./log/SNOWtoSMAXTrail.log",
+    "LogFileRotationEnable": true
+}
