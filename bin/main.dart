@@ -15,16 +15,16 @@ class Mapping {
     try {
       jsonVals = File('./data/mapping.json').readAsStringSync();
       jsonVals = jsonDecode(jsonVals);
-      logWriter.writeLog(
-          logFileName, 'Mapping', 'Mapping file loaded\n $jsonVals');
+      logWriter.writeLog(logFileName, 'Mapping',
+          'Mapping file loaded\n ${jsonVals['Impact']}');
     } catch (e) {
       logWriter.writeLog(logFileName, 'Mapping',
-          'ERROR : Error reading Mapping file \n ${e.message.toString()}');
+          'ERROR : Error reading Mapping file \n ${e.toString()}');
     }
   }
 
   void printVals() {
-    print(jsonVals['impact']['1']);
+    print(jsonVals['Impact']['1']);
   }
 }
 
@@ -198,8 +198,12 @@ void snowToSMAXExecute() async {
               'properties': {
                 'RegisteredForActualService': '11359',
                 //TO-DO Fetch service
-                'DisplayLabel': '${item['short_description']}',
-                'Description': '<p>${item['description']}</p>',
+                'DisplayLabel':
+                    '>Created from SNOW <b> ID: ${item['number']} ${item['short_description']}',
+                'Description':
+                    '<p>${item['description']}</p><br>Created from SNOW <b> ID: ${item['number']} </b>',
+                'Urgency': '${getSMAXUrgency(item['urgency'])}',
+                'ImpactScope': '${getSMAXImpact(item['impact'])}',
                 'DetectedEntities': '{\'complexTypeProperties\':[]}',
                 'UserOptions':
                     '{\'complexTypeProperties\':[{\'properties\':{}}]}'
@@ -286,3 +290,17 @@ void sendToSMAX(payload) async {
         'ERROR SMAX Create Bulk Error: Exception Occured \n ${e.toString()} ');
   }
 }
+
+String getSMAXImpact(sImpact) {
+  return mappingConfig.jsonVals['Impact'][sImpact];
+}
+
+String getSMAXUrgency(sUrgency) {
+  return mappingConfig.jsonVals['Urgency'][sUrgency];
+}
+
+//TODO
+String getSMAXService(sService) {}
+
+//TODO
+String getSNOWServiceName(sServiceCode) {}

@@ -1,10 +1,12 @@
 {
     "Impact": {
-        "1": "1",
-        "2": "2"
+        "1": "Enterprise",
+        "2": "SiteOrDepartment",
+        "3": "MultipleUsers"
     },
     "Urgency": {
-        "1": "1",
-        "2": "2"
+        "1": "TotalLossOfService",
+        "2": "SevereDisruption",
+        "3": "SlightDisruption"
     }
 }
