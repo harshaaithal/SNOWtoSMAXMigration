@@ -1,0 +1,10 @@
+{
+    "Uname": "mig.user",
+    "Pword": "Smax_Snow_2020",
+    "HostName":"btp-smax-poc-master.hpeswlab.net",
+    "TenantId":"238107612",
+    "EndopointURL": "",
+    "AuthURL":"",
+    "SmaxEntity": "Incident",
+    "CertFilePath":"./data/smax.cer"
+}

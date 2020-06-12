@@ -60,6 +60,7 @@ class Smax {
       endpointUrl,
       authUrl,
       smaxEntity,
+      defaultServiceCode,
       certFilePath;
   String authCookie;
   void readFromFile() {
@@ -71,9 +72,15 @@ class Smax {
       //endpointUrl = comFileJson['EndopointURL'];
       hostName = comFileJson['HostName'];
       tenantId = comFileJson['TenantId'];
+      defaultServiceCode = comFileJson['DefaultServiceCode'];
       endpointUrl = 'https://$hostName/rest/$tenantId/ems/bulk';
-      authUrl =
-          'https://$hostName/auth/authentication-endpoint/authenticate/login?TENANTID=$tenantId';
+      if (uname == 'suite-admin') {
+        authUrl =
+            'https://$hostName/auth/authentication-endpoint/authenticate/login/';
+      } else {
+        authUrl =
+            'https://$hostName/auth/authentication-endpoint/authenticate/login?TENANTID=$tenantId';
+      }
       //authUrl = 'https://$hostName/rest/$tenantId/ems/bulk';
       smaxEntity = comFileJson['SmaxEntity'];
       certFilePath = comFileJson['CertFilePath'];
@@ -168,6 +175,7 @@ void main(List<String> arguments) {
 }
 
 void snowToSMAXExecute() async {
+  var serviceCode;
   var auth = 'Basic ' +
       base64Encode(utf8.encode('${snowConfig.uname}:${snowConfig.password}'));
 
@@ -188,6 +196,14 @@ void snowToSMAXExecute() async {
           "Fetched :${snowResponse['result'].length} tickets (${snowConfig.endpointUrl})");
       for (var item in snowResponse['result']) {
         //print('${item['number']} ${item['state']} ${item['impact']}');
+        try {
+          print('${item['cmdb_ci']['value']}');
+          serviceCode = await getSMAXService(
+              item['cmdb_ci']['value'], smaxConfig.authCookie);
+        } catch (e) {
+          serviceCode = smaxConfig.defaultServiceCode;
+        }
+        print('service code ${serviceCode}');
         print('Processing ticket ${item['number']}');
         logWriter.writeLog(logFileName, "SMAX Bulk Create",
             'Processing ticket ${item['number']}');
@@ -196,10 +212,9 @@ void snowToSMAXExecute() async {
             {
               'entity_type': '${smaxConfig.smaxEntity}',
               'properties': {
-                'RegisteredForActualService': '11359',
-                //TO-DO Fetch service
+                'RegisteredForActualService': '${serviceCode}',
                 'DisplayLabel':
-                    '>Created from SNOW <b> ID: ${item['number']} ${item['short_description']}',
+                    'Demo Run -2 <b> ID: ${item['number']} ${item['short_description']}',
                 'Description':
                     '<p>${item['description']}</p><br>Created from SNOW <b> ID: ${item['number']} </b>',
                 'Urgency': '${getSMAXUrgency(item['urgency'])}',
@@ -214,7 +229,7 @@ void snowToSMAXExecute() async {
         };
         logWriter.writeLog(
             logFileName, "SMAX Bulk Create", 'JSON\n $imPayload');
-        sendToSMAX(json.encode(imPayload));
+        await sendToSMAX(json.encode(imPayload));
       }
     }
     //print(r.statusCode);
@@ -300,7 +315,63 @@ String getSMAXUrgency(sUrgency) {
 }
 
 //TODO
-String getSMAXService(sService) {}
+Future<String> getSMAXService(sService, auth) async {
+  var snowServiceName = await getSNOWServiceName(sService);
+  if (snowServiceName != null) {
+    //var response;
+    var serviceUrl =
+        '/ems/ActualService?filter=DisplayLabel+startswith+(%27${snowServiceName}%27)&layout=Id,DisplayLabel';
+    SecurityContext context = new SecurityContext();
+    context.setTrustedCertificates(smaxConfig.certFilePath);
+    var smaxHttpClient = new HttpClient(context: context);
+    try {
+      HttpClientRequest request = await smaxHttpClient.getUrl(Uri.parse(
+          'https://${smaxConfig.hostName}/rest/${smaxConfig.tenantId}${serviceUrl}'));
+      request.headers
+          .set('Cookie', 'LWSSO_COOKIE_KEY=${smaxConfig.authCookie}');
+      HttpClientResponse response = await request.close();
+      if (response.statusCode == 200) {
+        print(
+            'https://${smaxConfig.hostName}/rest/${smaxConfig.tenantId}${serviceUrl}');
+        var smaxGetServiceResponse =
+            jsonDecode(await response.transform(utf8.decoder).join());
+        print(smaxGetServiceResponse['meta']['completion_status']);
+        if (smaxGetServiceResponse['meta']['completion_status'] == 'OK' &&
+            smaxGetServiceResponse['meta']['total_count'] != 0) {
+          return smaxGetServiceResponse['entities'][0]['properties']['Id'];
+        } else {
+          return smaxConfig.defaultServiceCode;
+        }
+      } else {
+        return smaxConfig.defaultServiceCode;
+      }
+    } catch (e) {
+      print(e.toString());
+      return smaxConfig.defaultServiceCode;
+    }
+  } else {
+    return smaxConfig.defaultServiceCode;
+  }
+}
 
 //TODO
-String getSNOWServiceName(sServiceCode) {}
+Future<dynamic> getSNOWServiceName(snowServiceCode) async {
+  try {
+    var auth = 'Basic ' +
+      base64Encode(utf8.encode('${snowConfig.uname}:${snowConfig.password}'));
+  http.Response r = await http.get(
+      'https://${snowConfig.hostName}/api/now/table/cmdb_ci/${snowServiceCode}',
+      headers: <String, String>{'authorization': auth});
+  if (r.statusCode == 200) {
+    var snowResponse = jsonDecode(r.body);
+    print(snowResponse['result']['name']);
+    return snowResponse['result']['name'];
+  } else {
+    return null;
+  }
+  }catch (e) {
+    print(e.message);
+    return null;
+  }
+  
+}

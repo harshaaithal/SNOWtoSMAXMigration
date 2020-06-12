@@ -1,10 +1,11 @@
 {
-    "Uname": "mig.user",
-    "Pword": "Smax_Snow_2020",
-    "HostName":"btp-smax-poc-master.hpeswlab.net",
-    "TenantId":"238107612",
+    "Uname": "suite-admin",
+    "Pword": "Automation_1234",
+    "HostName":"poc.smaxbank.com",
+    "TenantId":"493767550",
     "EndopointURL": "",
     "AuthURL":"",
     "SmaxEntity": "Incident",
-    "CertFilePath":"./data/smax.cer"
+    "DefaultServiceCode":"11379",
+    "CertFilePath":"./data/smax-bofa.cer"
 }
