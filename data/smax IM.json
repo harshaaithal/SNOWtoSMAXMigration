@@ -5,7 +5,7 @@
     "TenantId":"493767550",
     "EndopointURL": "",
     "AuthURL":"",
-    "SmaxEntity": "Person",
+    "SmaxEntity": "Incident",
     "DefaultServiceCode":"11379",
     "CertFilePath":"./data/smax-bofa.cer"
 }

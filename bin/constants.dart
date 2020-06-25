@@ -1,0 +1,1 @@
+const SMAX_PERSON_JSON='{"operation":"CREATE_OR_UPDATE","users":[{"properties":{},"upnDataType":"Customer_UID","roles":{"REPLACE":[]},"groups":{"REPLACE":[]}}]}';
