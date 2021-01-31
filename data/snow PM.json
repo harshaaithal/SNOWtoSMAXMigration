@@ -1,8 +1,8 @@
 {
     "Uname": "admin",
     "Pword": "1bMTY9kTTxeu.2020",
-    "HostName": "dev96697.service-now.com",
-    "Query": "=number%2Cstate%2Cdescription%2Cshort_description%2Cimpact%2cmdb_ci%2Curgency&sysparm_limit=100",
+    "HostName":"dev96697.service-now.com",
+    "Query":"=number%2Cstate%2Cdescription%2Cshort_description%2Cimpact%2cmdb_ci%2Curgency&sysparm_limit=100",
     "EndopointURL": "https://dev102213.service-now.com/api/now/table/incident?sysparm_fields=number%2Cstate%2Cdescription%2Cshort_description%2Cimpact%2Curgency&sysparm_limit=100",
-    "ModuleName": "incident"
+    "ModuleName": "problem"
 }

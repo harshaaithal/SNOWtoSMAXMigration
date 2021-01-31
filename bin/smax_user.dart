@@ -7,18 +7,18 @@ class SmaxPerson {
   SmaxPerson.fromJson(Map<String, dynamic> json) {
     operation = json['operation'];
     if (json['users'] != null) {
-      users = new List<Users>();
+      users = <Users>[];
       json['users'].forEach((v) {
-        users.add(new Users.fromJson(v));
+        users.add(Users.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['operation'] = this.operation??this.operation;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['operation'] = this.operation ?? this.operation;
     if (this.users != null) {
-      data['users'] = this.users??this.users.map((v) => v.toJson()).toList();
+      data['users'] = this.users ?? this.users.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -34,24 +34,24 @@ class Users {
 
   Users.fromJson(Map<String, dynamic> json) {
     properties = json['properties'] != null
-        ? new Properties.fromJson(json['properties'])
+        ? Properties.fromJson(json['properties'])
         : null;
     upnDataType = json['upnDataType'];
-    roles = json['roles'] != null ? new Roles.fromJson(json['roles']) : null;
-    groups = json['groups'] != null ? new Roles.fromJson(json['groups']) : null;
+    roles = json['roles'] != null ? Roles.fromJson(json['roles']) : null;
+    groups = json['groups'] != null ? Roles.fromJson(json['groups']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.properties != null) {
-      data['properties'] = this.properties??this.properties.toJson();
+      data['properties'] = this.properties ?? this.properties.toJson();
     }
-    data['upnDataType'] = this.upnDataType??this.upnDataType;
+    data['upnDataType'] = this.upnDataType ?? this.upnDataType;
     if (this.roles != null) {
-      data['roles'] = this.roles??this.roles.toJson();
+      data['roles'] = this.roles ?? this.roles.toJson();
     }
     if (this.groups != null) {
-      data['groups'] = this.groups??this.groups.toJson();
+      data['groups'] = this.groups ?? this.groups.toJson();
     }
     return data;
   }
@@ -101,19 +101,22 @@ class Properties {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['FirstName'] = this.firstName??this.firstName;
-    data['LastName'] = this.lastName??this.lastName;
-    data['OfficePhoneNumber'] = this.officePhoneNumber??this.officePhoneNumber;
-    data['MobilePhoneNumber'] = this.mobilePhoneNumber??this.mobilePhoneNumber;
-    data['HomePhoneNumber'] = this.homePhoneNumber??this.homePhoneNumber;
-    data['Upn'] = this.upn??this.upn;
-    data['Manager'] = this.manager??this.manager;
-    data['IsMaasUser']= this.isMaasUser??this.isMaasUser;
-    data['Location'] = this.location??this.location;
-    data['CostCenter'] = this.costCenter??this.costCenter;
-    data['Email'] = this.email??this.email;
-    data['AuthenticationType'] = this.authenticationType??this.authenticationType;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['FirstName'] = this.firstName ?? this.firstName;
+    data['LastName'] = this.lastName ?? this.lastName;
+    data['OfficePhoneNumber'] =
+        this.officePhoneNumber ?? this.officePhoneNumber;
+    data['MobilePhoneNumber'] =
+        this.mobilePhoneNumber ?? this.mobilePhoneNumber;
+    data['HomePhoneNumber'] = this.homePhoneNumber ?? this.homePhoneNumber;
+    data['Upn'] = this.upn ?? this.upn;
+    data['Manager'] = this.manager ?? this.manager;
+    data['IsMaasUser'] = this.isMaasUser ?? this.isMaasUser;
+    data['Location'] = this.location ?? this.location;
+    data['CostCenter'] = this.costCenter ?? this.costCenter;
+    data['Email'] = this.email ?? this.email;
+    data['AuthenticationType'] =
+        this.authenticationType ?? this.authenticationType;
     return data;
   }
 }
@@ -128,8 +131,8 @@ class Roles {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['REPLACE'] = this.rEPLACE??this.rEPLACE;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['REPLACE'] = this.rEPLACE ?? this.rEPLACE;
     return data;
   }
 }

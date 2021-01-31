@@ -4,9 +4,10 @@ description: A sample command-line application.
 # homepage: https://www.example.com
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: ">=2.7.0 <3.0.0"
 
-#dependencies:
+dependencies:
+  mongo_dart: ^0.4.0
 #  path: ^1.6.0
 
 dev_dependencies:

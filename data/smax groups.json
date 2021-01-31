@@ -1,0 +1,11 @@
+{
+    "Uname": "suite-admin",
+    "Pword": "Automation_1234",
+    "HostName": "poc.smaxbank.com",
+    "TenantId": "493767550",
+    "EndopointURL": "",
+    "AuthURL": "",
+    "SmaxEntity": "PersonGroup",
+    "DefaultServiceCode": "11379",
+    "CertFilePath": "./data/smax-bofa.cer"
+}

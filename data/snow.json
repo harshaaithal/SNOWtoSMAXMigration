@@ -1,8 +1,8 @@
 {
     "Uname": "admin",
-    "Pword": "1bMTY9kTTxeu.2020",
-    "HostName":"dev96697.service-now.com",
+    "Pword": "6dhOIgQvVpS4",
+    "HostName":"dev75136.service-now.com",
     "Query":"=sysparm_fields=country%2Cstate%2Cvip%2Chome_phone%2Cname%2Cemployee_number%2Ccity%2Cmobile_phone%2Cemail%2Cmanager%2Cmiddle_name%2Clocation%2Cfirst_name%2Cuser_name&sysparm_limit=3",
-    "EndopointURL": "https://dev102213.service-now.com/api/now/table/incident?sysparm_fields=number%2Cstate%2Cdescription%2Cshort_description%2Cimpact%2Curgency&sysparm_limit=100",
-    "ModuleName": "sys_user"
+    "EndopointURL": "https://dev75136.service-now.com/api/now/table/incident?sysparm_fields=number%2Cstate%2Cdescription%2Cshort_description%2Cimpact%2Curgency&sysparm_limit=100",
+    "ModuleName": "problem"
 }
