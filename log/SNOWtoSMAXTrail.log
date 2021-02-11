@@ -1,5 +1,5 @@
-2021-01-31 16:02:13.342019,	Logger,	Logger Initated
-2021-01-31 16:02:13.348011,	SNOW Config Init,	SNOW {
+2021-02-11 18:12:26.766563,	Logger,	Logger Initated
+2021-02-11 18:12:26.768554,	SNOW Config Init,	SNOW {
     "Uname": "admin",
     "Pword": "1bMTY9kTTxeu.2020",
     "HostName":"dev96697.service-now.com",
@@ -7,16 +7,164 @@
     "EndopointURL": "https://dev102213.service-now.com/api/now/table/incident?sysparm_fields=number%2Cstate%2Cdescription%2Cshort_description%2Cimpact%2Curgency&sysparm_limit=100",
     "ModuleName": "problem"
 } Configuration Loaded successfully
-2021-01-31 16:02:13.355013,	SMAX Config Init,	SMAX {
-    "Uname": "suite-admin",
-    "Pword": "Automation_1234",
-    "HostName":"poc.smaxbank.com",
-    "TenantId":"493767550",
+2021-02-11 18:12:26.770554,	SMAX Config Init,	SMAX {
+    "Uname": "tenant_admin",
+    "Pword": "SMAXR0cks!",
+    "HostName":"us1-smax.saas.microfocus.com",
+    "TenantId":"598132864",
     "EndopointURL": "",
     "AuthURL":"",
     "SmaxEntity": "Problem",
-    "DefaultServiceCode":"11379",
-    "CertFilePath":"./data/smax-bofa.cer"
+    "DefaultServiceCode":"11509",
+    "CertFilePath":"./data/smax-saas.cer"
 } Configuration Loaded successfully
-2021-01-31 16:02:13.361014,	Mapping,	Mapping file loaded
+2021-02-11 18:12:26.771556,	Mapping,	Mapping file loaded
  {1: Enterprise, 2: SiteOrDepartment, 3: MultipleUsers}
+2021-02-11 18:12:26.910589,	DB Status,	true
+2021-02-11 18:12:28.390839,	SMAX,	SMAX Auth Successfull: Token 
+ WrE9eyYmkC4SNcC2xZQr5EK_nS9fIXmjKupqlzOhYi4i2Bgjwkzi_Rm-msQatnsNZOnanqaOHaVtM4f9KglFQ_LOXkRo9vQuXc_i1zE6a0ysHXUe9RgzVfnTqQV4DDY4DplQp-mOrvQzUhus2-RUIUMR2YEILSJ9HOCPb1FONvujYJHFh2Yy5epARVuA2I118TY7YSmbeb1w8QC1gTC2gPQljM_VxrnQJx6TTwr1Dhh3A-eRaL7DHL1eRm0eLex03-n7hJvMQ52SfHo0z3kSTrIoCmr9NytjwKMl4YO3AEnFhpp_wI68G-euEMdI8KQIfssPV_6B8SSGYfdrD3KH3T4Mxj2mCQT2HFhN0PDFj4bK7vQRwKelRT5EmpStiRfWNc9VEWcapWdJ4VRNYmd4ml4pSljqc5Khx7VJjSAGYhVzvX8pDVuEFyLtbJgYoUO0qQ1tuMZsmUEbu_wxyi8PhJ3i46tUzy3xmmpfWOwqtAZDJQvXXwgjR9Uup2OB7wuGopjYEThS_qnZw3-ONLebeDurcKN5TVJAQlCQhfwwN-td_EARYGgstgubOfz21-YXjR_7FeeDokVJzVZ4lNCCmYQamlQNeT8TDGPeckpncN9Ok87a3nKNH9s6KM_EMjp4MuUUCuLyT5kDOkcxvsjx_mbNMLficl2VF4_r55G66BK-QsZvoqTWm8I4LQmyJJVFTTSDMLTrNZwEXu07Eo4M6HfordJEKJ1r5bD2pvt384kHnFgFijIY7cB3ohpK5KkuAPAR7EuxGDrAvFPm-d7KL_ZpYSy00bGRSoJYhwtg99hEYO_NE5B4qmsj1DytYwsnVpy3KF6Pz-q5Jo3UDVUof0BODGHL1EtKFHqNxkOL50vBoOhy0R7eLS0B0vy1vphq2mwQLR4tt0n7rSWijZ4fGfQS5zCWMunNU0w5xmzqynsCYVb99Nc9T3h6jKc3t_KdrrtykdhmB-7_kLZ7PwgsHoEiJTeSOncKFDCeUNj2n7O_JfrFoWhFB324Q8OtENH4o0ui4UNBKFLxhX_Xs5g4k9_kOam0gQLho6y-HJ7GN-wJ2L6w9-D311ArCAUUeRm8INgMO7cJXZJkI056bmEEHKwDEWksKa28URvaGWFCVkSHH0wh9pN7hFq8llG7s-VwUt_lGnmV0z2eyh0Lfx6zmXpEd8FaPIlbtMJDsEmM9OEh49TbkqHMb5jCKUgF7ofxGWruy4uetZvN-kTU0YbmyAiVZoXtbWCuJwgiCyMkB8ytJs4a356of-Rbdr8HQApMi9Go0fx203ddG9wXHsO39PwGR9DOSUmEZwg49K4ai76mnnCIOilTYGeO5OE7nZWPnOv9IfTjvyrdg8BGuOOyOLGsGjzQ4FZqBBmMUnlk8GxTyhZRgzoS1d0L0WyV_vA3KMVEPwJRsO70EkdiTB1Hig.. 
+2021-02-11 18:12:28.724345,	SNOW,	SNOW Fetch Success:200 <html>
+    <head>
+        <meta HTTP-EQUIV="refresh" content="5;https://developer.servicenow.com/app.do#!/instance?wu=true">
+        <title>
+            Instance Hibernating page
+        </title>
+        <style>
+            @font-face {
+                font-family: "Gilroy-Bold";
+                font-style: normal;
+                 font-weight: normal;
+                src: url("gilroy-bold-webfont.woff2") format("woff2"),
+                     url("gilroy-bold-webfont.woff") format("woff");
+            }
+            @font-face {
+                font-family: "Gilroy-Regular";
+                font-style: normal;
+                font-weight: normal;
+                src: url("gilroy-regular-webfont.woff2") format("woff2"),
+                     url("gilroy-regular-webfont.woff") format("woff");
+            }
+            @font-face {
+                font-family: 'Gilroy-Medium';
+                font-style: normal;
+                font-weight: normal;
+                src: url('gilroy-medium-webfont.woff2') format('woff2'),
+                     url('gilroy-medium-webfont.woff') format('woff');
+            }
+            @font-face {
+                font-family: 'SourceSansPro-Regular';
+                src: url("source-sans-pro-v11-latin-regular.woff2") format("woff2"),
+                     url("source-sans-pro-v11-latin-regular.woff") format("woff");
+            }
+            body {
+                background-color: #293D40;
+            }
+            h1 {
+                margin: 150px 0 90px 0;
+                color: rgb(255, 255, 255);
+                font-family: Gilroy-Bold;
+                font-size: 38px;
+                font-weight: bold;
+                height: 42px;
+                letter-spacing: 0;
+                line-height: 42px;
+                width: 496px;
+            }
+            a {
+                color: rgb(255, 255, 255);
+                text-decoration: none;
+            }
+            button {
+                padding: 7px 0 25px 0;
+                background: rgb(255, 255, 255);
+                margin-left: 26%;
+            }
+            .instance-hibernating-page {
+                max-width: 600px;
+                margin: auto;
+                padding: 10px;
+            }
+            .resting-image {
+                height: fit-content;
+                position: relative;
+            }
+            .information {
+                margin: 30px 0 30px -80px;
+                color: rgb(255, 255, 255);
+                font-family: Gilroy-Regular;
+                font-size: 21px;
+                font-weight: normal;
+                height: 64px;
+                letter-spacing: 0;
+                line-height: 32px;
+                text-align: center;
+                width: 665px;
+            }
+            .external-link {
+                text-decoration: underline;
+            }
+            .button-text {
+                color: rgb(71, 77, 82);
+                font-family: Gilroy-Medium;
+                font-size: 15px;
+                height: 17px;
+                letter-spacing: 0;
+                width: 172px;
+            }
+            .button-arrow {
+                padding-left: 2px;
+            }
+            .redirection-text {
+                margin: 64px 0 0 14%;
+                color: rgb(255, 255, 255);
+                font-family: SourceSansPro-Regular;
+                font-size: 13px;
+                font-weight: normal;
+                height: 20px;
+                letter-spacing: 0;
+                line-height: 20px;
+                width: 332px;
+            }
+            .texture-image {
+                margin: 0 60px 0 1133px;
+                position: absolute;
+                width: 240px;
+                top: 0;
+                right: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="instance-hibernating-page">
+            <h1>Your instance is hibernating</h1>
+            <img class="resting-image" src="Resting-Image-Asset.svg" alt="texture_image" width="500" height="500">
+            <p class="information">Sign in to the site to wake your instance. Want to find out more? Visit the
+                <a href="https://developer.servicenow.com/app.do#!/PDIGuide" target="_blank">
+                    <span class="external-link">
+                        Personal Developer Instance (PDI) Guide
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 16 16" style="width: 1rem; height: 1rem;">
+                        <g stroke="none" fill="none">
+                            <path fill="currentColor" d="M5 3v1h6.293l-8.651 8.648.707.707L12 4.707v6.294h1V3z">
+                            </path>
+                        </g>
+                    </svg>
+                </a>to read up on Personal Developer Instances.
+            </p>
+            <button onclick="location.href='https://developer.servicenow.com/ssologin.do?relayState=https%3A%2F%2Fdeveloper.servicenow.com';" class ="button-text">Sign In
+                <span class="button-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 12 12" style="width: 0.75rem; height: 0.75rem;">
+				        <g stroke="none" fill="none"><path fill="currentColor" d="M9.11 6L5.815 2.704l.707-.708L11 6.475l-4.479 4.479-.707-.708L9.061 7H1.003V6z"></path></g>
+                    </svg>
+                </span>
+            </button>
+            <p class="redirection-text">You'll be automatically redirected to the ServiceNow Developer Site shortly</p>
+            <img class="texture-image" src="Texture_image_asset.png" alt="circles">
+        </div>
+    </body>
+</html>
+
+2021-02-11 18:12:28.726345,	SNOW,	Error:FormatException: Unexpected character (at character 1)
+<html>
+^
+
