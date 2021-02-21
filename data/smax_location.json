@@ -5,8 +5,8 @@
     "TenantId":"598132864",
     "EndopointURL": "",
     "AuthURL":"",
-    "SmaxEntity": "Problem",
-    "DefaultServiceCode":"11509",
-    "DefaultCategoryCode":"10852",
+    "SmaxEntity": "Location",
+    "DefaultServiceCode":"",
+    "DefaultCategoryCode":"",
     "CertFilePath":"./data/smax-saas.cer"
 }

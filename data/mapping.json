@@ -8,5 +8,11 @@
         "1": "TotalLossOfService",
         "2": "SevereDisruption",
         "3": "SlightDisruption"
+    },
+    "LocationType": {
+        "Region": "Region",
+        "street": "Office",
+        "city": "City",
+        "country":"Country"
     }
 }

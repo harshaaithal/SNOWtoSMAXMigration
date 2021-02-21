@@ -49,11 +49,11 @@ class Mapping {
     try {
       jsonVals = File('./data/mapping.json').readAsStringSync();
       jsonVals = jsonDecode(jsonVals);
-      logWriter.writeLog(logFileName, 'Mapping',
+      logWriter.writeLog(logFileName, 'Mapping', 'INFO',
           'Mapping file loaded\n ${jsonVals['Impact']}');
       logger.i('Mapping file loaded\n ${jsonVals['Impact']}');
     } catch (e) {
-      logWriter.writeLog(logFileName, 'Mapping',
+      logWriter.writeLog(logFileName, 'Mapping', 'FATAL',
           'ERROR : Error reading Mapping file \n ${e.toString()}');
     }
   }
@@ -65,9 +65,9 @@ class Mapping {
 
 class Snow {
   String uname, password, endpointUrl, snowModule, hostName, query;
-  void readFromFile() {
+  void readFromFile(snowFile) {
     try {
-      var comFile = File('./data/snow PM.json').readAsStringSync();
+      var comFile = File(snowFile).readAsStringSync();
       //TODO: Make it generic
       var comFileJson = jsonDecode(comFile);
       uname = comFileJson['Uname'];
@@ -77,13 +77,13 @@ class Snow {
       hostName = comFileJson['HostName'];
       query = comFileJson['Query'];
       endpointUrl = 'https://$hostName/api/now/table/$snowModule?$query';
-      logWriter.writeLog(logFileName, 'SNOW Config Init',
+      logWriter.writeLog(logFileName, 'SNOW Config Init', 'INFO',
           'SNOW ${comFile} Configuration Loaded successfully');
       logger.i('SNOW snow.json Configuration Loaded successfully');
     } catch (e) {
       logger.e('SNOW Config Init, ERROR: ${e.toString()}');
       logWriter.writeLog(
-          logFileName, 'SNOW Config Init', 'ERROR: ${e.toString()}');
+          logFileName, 'SNOW Config Init', 'ERROR', 'ERROR: ${e.toString()}');
     }
   }
 }
@@ -97,11 +97,12 @@ class Smax {
       authUrl,
       smaxEntity,
       defaultServiceCode,
+      defaultCategoryCode,
       certFilePath;
   String authCookie;
-  void readFromFile() {
+  void readFromFile(smaxFile) {
     try {
-      var comFile = File('./data/smax PM.json').readAsStringSync();
+      var comFile = File(smaxFile).readAsStringSync();
       var comFileJson = jsonDecode(comFile);
       uname = comFileJson['Uname'];
       password = comFileJson['Pword'];
@@ -110,6 +111,7 @@ class Smax {
       tenantId = comFileJson['TenantId'];
       smaxEntity = comFileJson['SmaxEntity'];
       defaultServiceCode = comFileJson['DefaultServiceCode'];
+      defaultCategoryCode = comFileJson['DefaultCategoryCode'];
       endpointUrl = smaxEntity != 'Person'
           ? 'https://$hostName/rest/$tenantId/ems/bulk'
           : 'https://$hostName/rest/$tenantId/ums/managePersons';
@@ -123,13 +125,13 @@ class Smax {
       //authUrl = 'https://$hostName/rest/$tenantId/ems/bulk';
 
       certFilePath = comFileJson['CertFilePath'];
-      logWriter.writeLog(logFileName, 'SMAX Config Init',
+      logWriter.writeLog(logFileName, 'SMAX Config Init', 'INFO',
           'SMAX ${comFile} Configuration Loaded successfully');
       logger.i('SMAX smax.json Configuration Loaded successfully');
     } catch (e) {
       logger.e('SMAX Config Init , ERROR: ${e.toString()}');
       logWriter.writeLog(
-          logFileName, 'SMAX Config Init', 'ERROR: ${e.toString()}');
+          logFileName, 'SMAX Config Init', 'ERROR', 'ERROR: ${e.toString()}');
     }
   }
 }
@@ -142,17 +144,17 @@ class CustomLogger {
     filename = fname;
   }
 
-  void writeLogInit(logFileName, mapping, msg) {
+  void writeLogInit(logFileName, mapping, level, msg) {
     var loggerFilename = File(logFileName);
     var now = DateTime.now();
 
-    loggerFilename.writeAsStringSync('${now},\t$mapping,\t$msg\n');
+    loggerFilename.writeAsStringSync('${now},\t$mapping,\t$level,\t$msg\n');
   }
 
-  void writeLog(logFileName, mapping, msg) {
+  void writeLog(logFileName, mapping, level, msg) {
     var now = DateTime.now();
     var loggerFilename = File(logFileName);
-    loggerFilename.writeAsStringSync('${now},\t$mapping,\t$msg\n',
+    loggerFilename.writeAsStringSync('${now},\t$mapping,\t$level,\t$msg\n',
         mode: FileMode.append);
   }
 
@@ -173,23 +175,26 @@ class CustomLogger {
 class CommonConfig {
   String logFileName;
   bool logRotationEnabled;
+  String SnowConfigFile, SMAXConfigFile;
 
   void intiValues() {
     try {
       var comFile = File('./data/common.json').readAsStringSync();
       logWriter.writeLogInit(
-          './log/Init.Log', 'Init', 'common.json file loaded');
-      logWriter.writeLog('./log/Init.Log', 'Init', comFile);
+          './log/Init.Log', 'Init', 'INFO', 'common.json file loaded');
+      logWriter.writeLog('./log/Init.Log', 'Init', 'INFO', comFile);
       var comFileJson = jsonDecode(comFile);
       logger.i(comFileJson);
       logger.i(comFileJson['LogFileName']);
       logFileName = comFileJson['LogFileName'];
-      logWriter.writeLog('./log/Init.Log', 'Init',
+      SnowConfigFile = comFileJson['SnowConfigFile'];
+      SMAXConfigFile = comFileJson['SMAXConfigFile'];
+      logWriter.writeLog('./log/Init.Log', 'Init', 'INFO',
           'logFileName=${comFileJson['LogFileName']}');
-      logWriter.writeLog('./log/Init.Log', 'Init',
+      logWriter.writeLog('./log/Init.Log', 'Init', 'INFO',
           'Rest of the logs will appear in this file ${comFileJson['LogFileName']}');
     } catch (e) {
-      logWriter.writeLogInit('./log/Init.Log', 'Init', e.toString());
+      logWriter.writeLogInit('./log/Init.Log', 'Init', 'FATAL', e.toString());
       logger.i(e.toString());
     }
   }
@@ -198,6 +203,7 @@ class CommonConfig {
 Future<void> main(List<String> arguments) async {
   //1. Initiating Common config files
 
+  logger.d(arguments);
   var commonConfig = CommonConfig();
   commonConfig.intiValues();
   logFileName = commonConfig.logFileName;
@@ -205,15 +211,16 @@ Future<void> main(List<String> arguments) async {
   //2. Initiating logger
 
   logWriter.intiFile(commonConfig.logFileName);
-  logWriter.writeLogInit(commonConfig.logFileName, 'Logger', 'Logger Initated');
+  logWriter.writeLogInit(
+      commonConfig.logFileName, 'Logger', 'INFO', 'Logger Initated');
   logger.i('Logger Initated');
   //3. Reading SNOW configuration
 
-  snowConfig.readFromFile();
+  snowConfig.readFromFile(commonConfig.SnowConfigFile);
 
   //4. Reading SMAX Configuration
 
-  smaxConfig.readFromFile();
+  smaxConfig.readFromFile(commonConfig.SMAXConfigFile);
 
   //5. Loading the mapping file
   mappingConfig.readFromFile();
@@ -224,7 +231,7 @@ Future<void> main(List<String> arguments) async {
 
   //7. Writinng mongoDB status
   mongoDB = MongoDB();
-  logWriter.writeLog(logFileName, 'DB Status', await mongoDB.initDB());
+  logWriter.writeLog(logFileName, 'DB Status', 'INFO', await mongoDB.initDB());
 
   //7. Execute SNOW to SMAX
   initiateSNOWtoSMAX('${smaxConfig.smaxEntity}-${snowConfig.snowModule}');
@@ -244,7 +251,12 @@ void initiateSNOWtoSMAX(exeUseCase) async {
     case 'Problem-problem':
       await snowToSMAXExecute_PM();
       break;
+    case 'Location-cmn_location':
+      await snowToSMAXExecute_Location('create');
+      await snowToSMAXExecute_Location('update');
+      break;
     default:
+      logger.e('No use case or an Invalid use case provided');
   }
 }
 
@@ -261,22 +273,22 @@ void snowToSMAXExecute_PersonGroup() async {
         headers: <String, String>{'authorization': auth});
     if (r.statusCode != 200) {
       logWriter.writeLog(
-          logFileName, 'SNOW', 'Error:${r.statusCode} ${r.body}');
+          logFileName, 'SNOW', 'ERROR', 'Error:${r.statusCode} ${r.body}');
     } else {
-      logWriter.writeLog(
-          logFileName, 'SNOW', 'SNOW Fetch Success:${r.statusCode} ${r.body}');
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
+          'SNOW Fetch Success:${r.statusCode} ${r.body}');
       snow_group = SnowGroup.fromJson(jsonDecode('${r.body}'));
       //logger.i(snowResponse['result'].length );
-      logWriter.writeLog(
-          logFileName, 'SNOW', 'Fetched :${snow_group.result.length} tickets');
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
+          'Fetched :${snow_group.result.length} tickets');
       logger.i(
           'Fetched :${snow_group.result.length} tickets (${snowConfig.endpointUrl})');
       for (var item in snow_group.result) {
         processedRecords.snowId = '${item.name}';
 
         logger.i('Processing ticket ${item.name}');
-        logWriter.writeLog(
-            logFileName, 'SMAX Bulk Create', 'Processing ticket ${item.name}');
+        logWriter.writeLog(logFileName, 'SMAX Bulk Create', 'INFO',
+            'Processing ticket ${item.name}');
         smaxPersonGroupJson = {
           'entities': [
             {
@@ -290,7 +302,7 @@ void snowToSMAXExecute_PersonGroup() async {
           ],
           'operation': 'CREATE'
         };
-        logWriter.writeLog(logFileName, 'SMAX Bulk Create',
+        logWriter.writeLog(logFileName, 'SMAX Bulk Create', 'INFO',
             'JSON::${json.encode(smaxPersonGroupJson)}\n');
         await sendToSMAX(json.encode(smaxPersonGroupJson), 'mpa');
       }
@@ -299,7 +311,7 @@ void snowToSMAXExecute_PersonGroup() async {
     //logger.i(r.body);
 
   } catch (e) {
-    logWriter.writeLog(logFileName, 'SNOW', 'Error:${e.toString()}');
+    logWriter.writeLog(logFileName, 'SNOW', 'ERROR', 'Error:${e.toString()}');
   }
 }
 
@@ -316,21 +328,21 @@ void snowToSMAXExecute_Person() async {
         headers: <String, String>{'authorization': auth});
     if (r.statusCode != 200) {
       logWriter.writeLog(
-          logFileName, 'SNOW', 'Error:${r.statusCode} ${r.body}');
+          logFileName, 'SNOW', 'ERROR', 'Error:${r.statusCode} ${r.body}');
     } else {
-      logWriter.writeLog(
-          logFileName, 'SNOW', 'SNOW Fetch Success:${r.statusCode} ${r.body}');
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
+          'SNOW Fetch Success:${r.statusCode} ${r.body}');
       snow_user = SnowUser.fromJson(jsonDecode('${r.body}'));
       //logger.i(snowResponse['result'].length );
-      logWriter.writeLog(
-          logFileName, 'SNOW', 'Fetched :${snow_user.result.length} tickets');
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
+          'Fetched :${snow_user.result.length} tickets');
       logger.i(
           'Fetched :${snow_user.result.length} tickets (${snowConfig.endpointUrl})');
       for (var item in snow_user.result) {
         processedRecords.snowId = '${item.userName}';
 
         logger.i('Processing ticket ${item.userName}');
-        logWriter.writeLog(logFileName, 'SMAX Bulk Create',
+        logWriter.writeLog(logFileName, 'SMAX Bulk Create', 'INFO',
             'Processing ticket ${item.userName}');
 
         if (item.manager == null && item.roles == '') {
@@ -404,7 +416,7 @@ void snowToSMAXExecute_Person() async {
             ]
           };
         }
-        logWriter.writeLog(logFileName, 'SMAX Bulk Create',
+        logWriter.writeLog(logFileName, 'SMAX Bulk Create', 'INFO',
             'JSON::${json.encode(smaxPersonJson)}\n');
         await sendToSMAX(json.encode(smaxPersonJson), 'mpa');
       }
@@ -413,7 +425,7 @@ void snowToSMAXExecute_Person() async {
     //logger.i(r.body);
 
   } catch (e) {
-    logWriter.writeLog(logFileName, 'SNOW', 'Error:${e.toString()}');
+    logWriter.writeLog(logFileName, 'SNOW', 'ERROR', 'Error:${e.toString()}');
   }
 }
 
@@ -447,13 +459,13 @@ void snowToSMAXExecute_IM() async {
         headers: <String, String>{'authorization': auth});
     if (r.statusCode != 200) {
       logWriter.writeLog(
-          logFileName, 'SNOW', 'Error:${r.statusCode} ${r.body}');
+          logFileName, 'SNOW', 'ERROR', 'Error:${r.statusCode} ${r.body}');
     } else {
-      logWriter.writeLog(
-          logFileName, 'SNOW', 'SNOW Fetch Success:${r.statusCode} ${r.body}');
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
+          'SNOW Fetch Success:${r.statusCode} ${r.body}');
       var snowResponse = jsonDecode(r.body);
       //logger.i(snowResponse['result'].length );
-      logWriter.writeLog(logFileName, 'SNOW',
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
           "Fetched :${snowResponse['result'].length} tickets");
       logger.i(
           "Fetched :${snowResponse['result'].length} tickets (${snowConfig.endpointUrl})");
@@ -469,7 +481,7 @@ void snowToSMAXExecute_IM() async {
         }
         logger.i('service code ${serviceCode}');
         logger.i('Processing ticket ${item['number']}');
-        logWriter.writeLog(logFileName, 'SMAX Bulk Create',
+        logWriter.writeLog(logFileName, 'SMAX Bulk Create', 'INFO',
             'Processing ticket ${item['number']}');
         var imPayload = {
           'entities': [
@@ -492,7 +504,7 @@ void snowToSMAXExecute_IM() async {
           'operation': 'CREATE'
         };
         logWriter.writeLog(
-            logFileName, 'SMAX Bulk Create', 'JSON\n $imPayload');
+            logFileName, 'SMAX Bulk Create', 'INFO', 'JSON\n $imPayload');
         await sendToSMAX(json.encode(imPayload), 'ems');
       }
     }
@@ -500,7 +512,104 @@ void snowToSMAXExecute_IM() async {
     //logger.i(r.body);
 
   } catch (e) {
-    logWriter.writeLog(logFileName, 'SNOW', 'Error:${e.toString()}');
+    logWriter.writeLog(logFileName, 'SNOW', 'ERROR', 'Error:${e.toString()}');
+  }
+}
+
+void snowToSMAXExecute_Location(op) async {
+  logWriter.writeStatusInit();
+  var serviceCode;
+  var auth = 'Basic ' +
+      base64Encode(utf8.encode('${snowConfig.uname}:${snowConfig.password}'));
+
+  try {
+    var r = await http.get('${snowConfig.endpointUrl}',
+        headers: <String, String>{'authorization': auth});
+    if (r.statusCode != 200) {
+      logWriter.writeLog(
+          logFileName, 'SNOW', 'ERROR', 'Error:${r.statusCode} ${r.body}');
+    } else {
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
+          'SNOW Fetch Success:${r.statusCode} ${r.body}');
+      var snowResponse = jsonDecode(r.body);
+      //logger.i(snowResponse['result'].length );
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
+          "Fetched :${snowResponse['result'].length} tickets");
+      logger.i(
+          "Fetched :${snowResponse['result'].length} tickets (${snowConfig.endpointUrl})");
+      for (var item in snowResponse['result']) {
+        processedRecords.snowId = '${item['name']}';
+        //logger.i('${item['number']} ${item['state']} ${item['impact']}');
+
+        logger.i('Location code ${serviceCode}');
+        logger.i('Processing ticket ${item['name']}');
+        logWriter.writeLog(logFileName, 'SMAX Bulk Create', 'INFO',
+            'Processing ticket ${item['name']}');
+        var tType = '';
+        var parentLoc = '';
+
+        if (op == 'update' && item['parent']['value'] != null) {
+          try {
+            logger.i('${item['parent']['value']}');
+            parentLoc = await getSMAXParentLoc(
+                item['parent']['value'], smaxConfig.authCookie);
+          } catch (e) {
+            parentLoc = '';
+          }
+        }
+        if (item['parent']['value'] == null) {
+          tType = getSMAXLocationType('Region');
+        } else if (item['street'] != '') {
+          tType = getSMAXLocationType('street');
+        } else if (item['city'] != '') {
+          tType = getSMAXLocationType('city');
+        } else if (item['country'] != '') {
+          tType = getSMAXLocationType('country');
+        } else {
+          tType = getSMAXLocationType('Region');
+        }
+        var imPayload = {};
+        if (op == 'create') {
+          imPayload = {
+            'entities': [
+              {
+                'entity_type': '${smaxConfig.smaxEntity}',
+                'properties': {
+                  'LocationType': '${tType}',
+                  'Name': '${item['name']}',
+                }
+              }
+            ],
+            'operation': 'CREATE'
+          };
+          logWriter.writeLog(
+              logFileName, 'SMAX Bulk Create', 'INFO', 'JSON\n $imPayload');
+          await sendToSMAX(json.encode(imPayload), 'ems');
+        } else if (parentLoc != null && parentLoc != '') {
+          imPayload = {
+            'entities': [
+              {
+                'entity_type': '${smaxConfig.smaxEntity}',
+                'properties': {
+                  'LocationType': '${tType}',
+                  'Name': '${item['name']}',
+                  'ParentLocation': '$parentLoc'
+                }
+              }
+            ],
+            'operation': 'UPDATE'
+          };
+          logWriter.writeLog(
+              logFileName, 'SMAX Bulk Create', 'INFO', 'JSON\n $imPayload');
+          await sendToSMAX(json.encode(imPayload), 'ems');
+        }
+      }
+    }
+    //logger.i(r.statusCode);
+    //logger.i(r.body);
+
+  } catch (e) {
+    logWriter.writeLog(logFileName, 'SNOW', 'ERROR', 'Error:${e.toString()}');
   }
 }
 
@@ -515,13 +624,13 @@ void snowToSMAXExecute_PM() async {
         headers: <String, String>{'authorization': auth});
     if (r.statusCode != 200) {
       logWriter.writeLog(
-          logFileName, 'SNOW', 'Error:${r.statusCode} ${r.body}');
+          logFileName, 'SNOW', 'ERROR', 'Error:${r.statusCode} ${r.body}');
     } else {
-      logWriter.writeLog(
-          logFileName, 'SNOW', 'SNOW Fetch Success:${r.statusCode} ${r.body}');
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
+          'SNOW Fetch Success:${r.statusCode} ${r.body}');
       var snowResponse = jsonDecode(r.body);
       //logger.i(snowResponse['result'].length );
-      logWriter.writeLog(logFileName, 'SNOW',
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
           "Fetched :${snowResponse['result'].length} tickets");
       logger.i(
           "Fetched :${snowResponse['result'].length} tickets (${snowConfig.endpointUrl})");
@@ -536,31 +645,38 @@ void snowToSMAXExecute_PM() async {
           serviceCode = smaxConfig.defaultServiceCode;
         }
         logger.i('service code ${serviceCode}');
+        try {
+          logger.i('${item['category']}');
+          serviceCode =
+              await getSMAXCategory(item['category'], smaxConfig.authCookie);
+        } catch (e) {
+          serviceCode = smaxConfig.defaultCategoryCode;
+        }
+        logger.i('Category code ${serviceCode}');
+
         logger.i('Processing ticket ${item['number']}');
-        logWriter.writeLog(logFileName, 'SMAX Bulk Create',
+        logWriter.writeLog(logFileName, 'SMAX Bulk Create', 'INFO',
             'Processing ticket ${item['number']}');
         var imPayload = {
           'entities': [
             {
               'entity_type': '${smaxConfig.smaxEntity}',
               'properties': {
-                'RegisteredForActualService': '${serviceCode}',
+                'AffectsActualService': '${serviceCode}',
                 'DisplayLabel':
                     'Demo Run -2 <b> ID: ${item['number']} ${item['short_description']}',
-                'Description':
+                'Symptoms':
                     '<p>${item['description']}</p><br>Created from SNOW <b> ID: ${item['number']} </b>',
                 'Urgency': '${getSMAXUrgency(item['urgency'])}',
                 'ImpactScope': '${getSMAXImpact(item['impact'])}',
-                'DetectedEntities': '{\'complexTypeProperties\':[]}',
-                'UserOptions':
-                    '{\'complexTypeProperties\':[{\'properties\':{}}]}'
+                'Category': '10852'
               }
             }
           ],
           'operation': 'CREATE'
         };
         logWriter.writeLog(
-            logFileName, 'SMAX Bulk Create', 'JSON\n $imPayload');
+            logFileName, 'SMAX Bulk Create', 'INFO', 'JSON\n $imPayload');
         await sendToSMAX(json.encode(imPayload), 'ems');
       }
     }
@@ -568,7 +684,7 @@ void snowToSMAXExecute_PM() async {
     //logger.i(r.body);
 
   } catch (e) {
-    logWriter.writeLog(logFileName, 'SNOW', 'Error:${e.toString()}');
+    logWriter.writeLog(logFileName, 'SNOW', 'ERROR', 'Error:${e.toString()}');
   }
 }
 
@@ -589,17 +705,17 @@ void setSMAXAuth() async {
       var authToken = await response.transform(utf8.decoder).join();
       smaxConfig.authCookie = authToken;
       logger.i('SMAX Auth Successfull');
-      logWriter.writeLog(
-          logFileName, 'SMAX', 'SMAX Auth Successfull: Token \n ${authToken} ');
+      logWriter.writeLog(logFileName, 'SMAX', 'INFO',
+          'SMAX Auth Successfull: Token \n ${authToken} ');
     } else {
       var erMsg = await response.transform(utf8.decoder).join();
       logger.i(
           'ERROR SMAX Auth Error: Status Code ${response.statusCode} Message \n ${erMsg} ');
-      logWriter.writeLog(logFileName, 'SMAX',
+      logWriter.writeLog(logFileName, 'SMAX', 'INFO',
           'ERROR SMAX Auth Error: Status Code ${response.statusCode} Message \n ${erMsg} ');
     }
   } catch (e) {
-    logWriter.writeLog(logFileName, 'SMAX',
+    logWriter.writeLog(logFileName, 'SMAX', 'ERROR',
         'ERROR SMAX Create Bulk Error: Exception Occured \n ${e.toString()} ');
     logger.e(
         'ERROR SMAX Create Bulk Error: Exception Occured \n ${e.toString()} ');
@@ -627,18 +743,28 @@ void sendToSMAX(payload, ticketType) async {
       if (ticketType == 'ems') {
         processedRecords.smaxId = responseJsonStr['entity_result_list'][0]
             ['entity']['properties']['Id'];
-        processedRecords.status = 'Success';
-        smaxConfig.authUrl = responseJson;
-        logger.i('SMAX Create Bulk Successfull');
-        logWriter.writeLog(logFileName, 'SMAX',
-            'SMAX Create Bulk Successfull: Response JSON \n ${responseJson} ');
-        await mongoDB.createRecord(smaxConfig.endpointUrl, payload, 'SUCCESS',
-            processedRecords.elapseTime, smaxConfig.smaxEntity);
+        if (processedRecords.smaxId != null) {
+          processedRecords.status = 'Success';
+          smaxConfig.authUrl = responseJson;
+          logger.i('SMAX Create Bulk Successfull');
+          logWriter.writeLog(logFileName, 'SMAX', 'INFO',
+              'SMAX Create Bulk Successfull: Response JSON \n ${responseJson} ');
+          await mongoDB.createRecord(smaxConfig.endpointUrl, payload, 'SUCCESS',
+              processedRecords.elapseTime, smaxConfig.smaxEntity);
+        } else {
+          processedRecords.status = 'Failed';
+          smaxConfig.authUrl = responseJson;
+          logger.i('SMAX Create Bulk Failed');
+          logWriter.writeLog(logFileName, 'SMAX', 'ERROR',
+              'SMAX Create Bulk failed: Response JSON \n ${responseJson} ');
+          await mongoDB.createRecord(smaxConfig.endpointUrl, payload, 'FAILED',
+              processedRecords.elapseTime, smaxConfig.smaxEntity);
+        }
       } else {
         processedRecords.smaxId = responseJsonStr['JobId'];
         processedRecords.status = 'Success';
         logger.i('SMAX Create Bulk Successfull');
-        logWriter.writeLog(logFileName, 'SMAX',
+        logWriter.writeLog(logFileName, 'SMAX', 'INFO',
             'SMAX Create Bulk Successfull: Response JSON \n ${responseJson} ');
         await mongoDB.createRecord(smaxConfig.endpointUrl, payload, 'SUCCESS',
             processedRecords.elapseTime, smaxConfig.smaxEntity);
@@ -648,15 +774,15 @@ void sendToSMAX(payload, ticketType) async {
       logger.i(
           'ERROR SMAX Create Bulk Error: Status Code ${response.statusCode} Message \n ${erMsg} ');
       processedRecords.status = 'Failed';
-      logWriter.writeLog(logFileName, 'SMAX',
+      logWriter.writeLog(logFileName, 'SMAX', 'ERROR',
           'ERROR SMAX Create Bulk Error: Status Code ${response.statusCode} Message \n ${erMsg} ');
       await mongoDB.createRecord(smaxConfig.endpointUrl, payload, 'FAILED',
           processedRecords.elapseTime, smaxConfig.smaxEntity);
     }
   } catch (e) {
-    logWriter.writeLog(logFileName, 'SMAX',
+    logWriter.writeLog(logFileName, 'SMAX', 'ERROR',
         'ERROR SMAX Create Bulk Error: Exception Occured \n ${e.toString()} ');
-    logger.i(
+    logger.i('ERROR',
         'ERROR SMAX Create Bulk Error: Exception Occured \n ${e.toString()} ');
     processedRecords.status = 'Failed';
     await mongoDB.createRecord(smaxConfig.endpointUrl, payload, 'FAILED',
@@ -671,6 +797,10 @@ String getSMAXImpact(sImpact) {
 
 String getSMAXUrgency(sUrgency) {
   return mappingConfig.jsonVals['Urgency'][sUrgency];
+}
+
+String getSMAXLocationType(sLocType) {
+  return mappingConfig.jsonVals['LocationType'][sLocType];
 }
 
 Future<String> getSMAXService(sService, auth) async {
@@ -709,6 +839,84 @@ Future<String> getSMAXService(sService, auth) async {
     }
   } else {
     return smaxConfig.defaultServiceCode;
+  }
+}
+
+Future<String> getSMAXParentLoc(sLoc, auth) async {
+  var snowLoc = await getSNOWServiceName(sLoc);
+  if (snowLoc != null) {
+    //var response;
+    var serviceUrl =
+        '/ems/Location?filter=Name+startswith+(%27${snowLoc}%27)&layout=Id,Name';
+    var context = SecurityContext();
+    context.setTrustedCertificates(smaxConfig.certFilePath);
+    var smaxHttpClient = HttpClient(context: context);
+    try {
+      var request = await smaxHttpClient.getUrl(Uri.parse(
+          'https://${smaxConfig.hostName}/rest/${smaxConfig.tenantId}${serviceUrl}'));
+      request.headers
+          .set('Cookie', 'LWSSO_COOKIE_KEY=${smaxConfig.authCookie}');
+      var response = await request.close();
+      if (response.statusCode == 200) {
+        logger.i(
+            'https://${smaxConfig.hostName}/rest/${smaxConfig.tenantId}${serviceUrl}');
+        var smaxLocationResponse =
+            jsonDecode(await response.transform(utf8.decoder).join());
+        logger.i(smaxLocationResponse['meta']['completion_status']);
+        if (smaxLocationResponse['meta']['completion_status'] == 'OK' &&
+            smaxLocationResponse['meta']['total_count'] != 0) {
+          return smaxLocationResponse['entities'][0]['properties']['Id'];
+        } else {
+          return '';
+        }
+      } else {
+        return '';
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      return '';
+    }
+  } else {
+    return '';
+  }
+}
+
+Future<String> getSMAXCategory(sCategory, auth) async {
+  var snowCategoryName = sCategory;
+  if (snowCategoryName != null) {
+    //var response;
+    var serviceUrl =
+        '/ems/ITProcessRecordCategory?filter=DisplayLabel+startswith+(%27${snowCategoryName}%27)&layout=Id,DisplayLabel';
+    var context = SecurityContext();
+    context.setTrustedCertificates(smaxConfig.certFilePath);
+    var smaxHttpClient = HttpClient(context: context);
+    try {
+      var request = await smaxHttpClient.getUrl(Uri.parse(
+          'https://${smaxConfig.hostName}/rest/${smaxConfig.tenantId}${serviceUrl}'));
+      request.headers
+          .set('Cookie', 'LWSSO_COOKIE_KEY=${smaxConfig.authCookie}');
+      var response = await request.close();
+      if (response.statusCode == 200) {
+        logger.i(
+            'https://${smaxConfig.hostName}/rest/${smaxConfig.tenantId}${serviceUrl}');
+        var smaxGetServiceResponse =
+            jsonDecode(await response.transform(utf8.decoder).join());
+        logger.i(smaxGetServiceResponse['meta']['completion_status']);
+        if (smaxGetServiceResponse['meta']['completion_status'] == 'OK' &&
+            smaxGetServiceResponse['meta']['total_count'] != 0) {
+          return smaxGetServiceResponse['entities'][0]['properties']['Id'];
+        } else {
+          return smaxConfig.defaultCategoryCode;
+        }
+      } else {
+        return smaxConfig.defaultCategoryCode;
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      return smaxConfig.defaultCategoryCode;
+    }
+  } else {
+    return smaxConfig.defaultCategoryCode;
   }
 }
 
