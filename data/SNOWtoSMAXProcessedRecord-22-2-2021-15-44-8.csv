@@ -1,0 +1,140 @@
+SnowID,SMAXId,Status,Time(in millisec),UseCase
+2-10-1 Yurakucho, Chiyoda-ku, Tokyo,17475,Success,4400
+Colombia,17476,Success,1266
+Five Points 2009 Fairview RD, Raleigh, NC,17919,Success,1305
+2617 South Robinson Avenue, Oklahoma City,OK,17482,Success,1269
+Winnipeg,17942,Success,1329
+Indianapolis,17945,Success,1269
+Frisco,17949,Success,1324
+Minnesota,17950,Success,1609
+Washington,10904,Success,1266
+Dallas,17956,Success,1304
+Texas,17962,Success,1509
+New York,10939,Success,1286
+2-12-1 Ookayama, Meguro-ku, Tokyo,17964,Success,1298
+Arlington,17965,Success,1254
+Ohio,17973,Success,1304
+Rhode Island,17487,Success,1284
+Seabrook,17489,Success,1263
+Mesquite,17979,Success,1368
+Bloomington,17490,Success,1284
+Austin,17491,Success,1266
+248 Abbotsford Road, Brisbane,17492,Success,1279
+Karmelitska 2, Lesser Town, Prague,17981,Success,1290
+300 Long Beach Boulevard, Long Beach,CA,17989,Success,1298
+135 East Olive Avenue, Burbank,CA,17499,Success,1302
+3419 Via Lido, Newport Beach,CA,18004,Success,1309
+2200 Powell Street, San Francisco,CA,18006,Success,1268
+1505 Main Street, Windsor,CO,18009,Success,1344
+7972 Pines Boulevard, Pembroke Pines,FL,17990,Success,1211
+2091 Northeast 36th Street, Lighthouse Point,FL,17991,Success,1274
+1454 Northwest 78th Avenue, Doral,FL,17992,Success,1264
+Seybold, 36 Northeast 1st Street #407, Miami,FL,17992,Failed,3706
+8306 Mills Drive, Miami,FL,17994,Success,1398
+400 Northwest 7th Avenue, Fort Lauderdale,FL,18089,Success,1306
+6555 North Powerline Road #410, Fort Lauderdale,FL,18089,Failed,1239
+6710 Stirling Road, Hollywood,FL,18226,Success,1291
+2414, Fort Lauderdale,FL,18227,Success,1281
+2714 North University Drive, Sunrise,FL,18228,Success,1576
+5495 Jimmy Carter Boulevard, Norcross,GA,18091,Success,1271
+10719 Alpharetta Highway, Roswell,GA,18092,Success,1311
+3628 Satellite Boulevard Northwest, Duluth,GA,18095,Success,1380
+2400 Riverstone Boulevard, Canton,GA,18096,Success,1260
+918 Joe Frank Harris Parkway Southeast, Cartersville,GA,18097,Success,1355
+5220 Jimmy Lee Smith Parkway, Hiram,GA,18099,Success,1230
+1635 Old 41 Highway Northwest #112, Kennesaw,GA,18099,Failed,1466
+1772 Jonesboro Road, McDonough,GA,18102,Success,1222
+675 Lakeview Parkway, Vernon Hills,IL,18308,Success,2251
+9249 Cicero Avenue, Oak Lawn,IL,18309,Success,1324
+15128 South La Grange Road, Orland Park,IL,18310,Success,1280
+1400 Centre Circle, Downers Grove,IL,18311,Success,1287
+757 East Lewis and Clark Parkway #814, Clarksville,IN,18311,Failed,1159
+125 West South Street, Indianapolis,IN,18314,Success,1343
+1701 East Edgewood Avenue, Southport,IN,18315,Success,1260
+5868 East 71st Street, Indianapolis,IN,18233,Success,1378
+6401 Gateway Drive, Indianapolis,IN,18316,Success,1253
+303 West 80th Place, Merrillville,IN,18317,Success,1299
+1116 Ulrich Avenue, Louisville,KY,18318,Success,1248
+420 Columbia Street, Newport,KY,18320,Success,1339
+25 New Chardon Street, Boston,MA,18321,Success,1552
+1624 Ness Ave, Winnipeg MB,18322,Success,1550
+143 Rollins Avenue, Rockville,MD,18323,Success,1258
+808 Glen Eagles Court #1, Baltimore,MD,18323,Failed,1173
+2351 Bellingham Drive, Troy,MI,18324,Success,1288
+7007 Metropolitan Parkway, Sterling Heights,MI,18326,Success,1307
+7550 22nd Avenue South, Minneapolis,MN,18327,Success,3583
+314 Lennon Drive, Wilmington,NC,18241,Success,1319
+4000 Atlantic Avenue, Raleigh,NC,18331,Success,1300
+1820 Harris Houston Road, Charlotte,NC,18332,Success,1289
+206 East 1st Street, Lowell,NC,18242,Success,1252
+2217 Matthews Township Parkway, Matthews,NC,18333,Success,1259
+254 Daniel Webster Highway #4, Nashua,NH,18333,Failed,1477
+95 Eddy Road, Manchester,NH,18336,Success,1541
+33 East Midland Avenue, Paramus,NJ,18337,Success,1604
+322 West 52nd Street, New York,NY,18338,Success,1341
+4040 Erie Street, Willoughby,OH,18244,Success,1232
+395 Federal Street, Pittsburgh,PA,18339,Success,1266
+Pittsburgh,PA,18340,Success,1336
+300 Bristol Pike, Croydon,PA,18342,Success,1335
+620 Allendale Road #125, King of Prussia,PA,18342,Failed,1242
+820 67th Avenue North, Myrtle Beach,SC,18346,Success,1274
+601 College Street, Clarksville,TN,18348,Success,1277
+301 Northcreek Boulevard, Goodlettsville,TN,18349,Success,1292
+1801 Memorial Boulevard, Murfreesboro,TN,18350,Success,1279
+16 Arcade, Nashville,TN,18351,Success,1290
+4112 Nolensville Pike, Nashville,TN,18247,Success,1334
+9201 Warren Parkway #200, Frisco,TX,18247,Failed,1223
+3501 Gus Thomasson Road #35, Mesquite,TX,18247,Failed,1214
+400 North Ervay Street, Dallas,TX,18353,Success,1276
+13770 Noel Road, Dallas,TX,18353,Failed,1163
+1975 Ballpark Way, Arlington,TX,18353,Failed,1860
+4401 Little Road #550, Arlington,TX,18353,Failed,1107
+5358 Wedgmont Circle North, Fort Worth,TX,18353,Failed,1129
+8723 Bedford Euless Road, Hurst,TX,18354,Success,1345
+5740 West Little York Road, Houston,TX,18355,Success,1209
+9600 Westheimer Road, Houston,TX,18356,Success,3409
+12955 Bow Willow, Houston,TX,18357,Success,1303
+17119 Red Oak Drive, Houston,TX,18358,Success,1268
+3740 Greenbriar Street, Houston,TX,18359,Success,2549
+1600 2nd Street, Seabrook,TX,18359,Failed,3063
+823 Congress Avenue #150, Austin,TX,18359,Failed,1254
+101 Broadway East, Seattle,WA,18366,Success,1286
+5200 West Oklahoma Avenue, Milwaukee,WI,18368,Success,1269
+4800 Converse Avenue, Cheyenne,WY,18369,Success,1276
+SHS quadra 5, Bloco E., Brasilia,18370,Success,1349
+Carretera Cancun-Chetumal KM 22, Cancun,18371,Success,1478
+Carrera 54 No. 49 - 31, Medellin,18372,Success,1292
+Hamburg,10893,Success,1631
+Cape Town,18257,Success,1260
+Johannesburg,18258,Success,1309
+Melbourne,18259,Success,1285
+Brisbane,18260,Success,1325
+Geneva,18261,Success,1270
+Clarksville,18262,Success,1588
+Mentor,18263,Success,1275
+Fort Worth,18265,Success,1277
+Loveland,18379,Success,1306
+150 Kennedy Road, Hong Kong,18383,Success,1227
+Merrillville,18384,Success,1281
+Seattle,18385,Success,1317
+Brasil,18269,Success,1276
+Manitoba,18387,Success,1226
+Colorado,18388,Success,1313
+75-85 York Street, Melbourne,18388,Failed,1103
+Utah,18388,Failed,1435
+Georgia,18388,Failed,1133
+Michigan,18388,Failed,1184
+Virginia,18388,Failed,1168
+Houston,10990,Success,1298
+Louisiana,10990,Failed,1215
+Tennessee,10990,Failed,1176
+Westminster,10990,Failed,1201
+Stafford,10990,Failed,1211
+Indiana,17945,Success,1277
+New Jersey,17945,Failed,1246
+Pennsylvania,17945,Failed,1166
+30 Katharinenstr, Hamburg,17945,Failed,1189
+Wyoming,17945,Failed,1127
+450 Lexington Avenue, New York,NY,17945,Failed,1167
+450 West 14th Avenue, Denver,CO,17945,Failed,1176
+Mexico,10877,Success,33942

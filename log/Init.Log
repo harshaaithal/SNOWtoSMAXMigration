@@ -1,9 +1,9 @@
-2021-02-20 23:13:52.845856,	Init,	INFO,	common.json file loaded
-2021-02-20 23:13:52.854858,	Init,	INFO,	{
-    "LogFileName": "./log/SNOWtoSMAXTrail.log",
+2021-02-22 16:14:33.635487,	Init,	INFO,	common.json file loaded
+2021-02-22 16:14:33.643489,	Init,	INFO,	{
+    "LogFileName": "./log/SNOWtoSMAXLocation.log",
     "LogFileRotationEnable": true,
     "SnowConfigFile":"./data/snow_location.json",
     "SMAXConfigFile":"./data/smax_location.json"
 }
-2021-02-20 23:13:52.868860,	Init,	INFO,	logFileName=./log/SNOWtoSMAXTrail.log
-2021-02-20 23:13:52.872862,	Init,	INFO,	Rest of the logs will appear in this file ./log/SNOWtoSMAXTrail.log
+2021-02-22 16:14:33.657484,	Init,	INFO,	logFileName=./log/SNOWtoSMAXLocation.log
+2021-02-22 16:14:33.664484,	Init,	INFO,	Rest of the logs will appear in this file ./log/SNOWtoSMAXLocation.log

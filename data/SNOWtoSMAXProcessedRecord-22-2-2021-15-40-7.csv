@@ -1,0 +1,141 @@
+SnowID,SMAXId,Status,Time(in millisec),UseCase
+2-10-1 Yurakucho, Chiyoda-ku, Tokyo,null,Failed,1210
+Colombia,null,Failed,1171
+Five Points 2009 Fairview RD, Raleigh, NC,null,Failed,1156
+2617 South Robinson Avenue, Oklahoma City,OK,null,Failed,1255
+Winnipeg,null,Failed,1139
+Indianapolis,null,Failed,1184
+Frisco,null,Failed,1248
+Minnesota,null,Failed,1184
+Washington,null,Failed,1210
+Dallas,null,Failed,1138
+Texas,null,Failed,1113
+New York,null,Failed,1141
+2-12-1 Ookayama, Meguro-ku, Tokyo,null,Failed,1172
+Arlington,null,Failed,1175
+Ohio,null,Failed,1123
+Rhode Island,null,Failed,1213
+Seabrook,null,Failed,1218
+Mesquite,null,Failed,1224
+Bloomington,null,Failed,1203
+Austin,null,Failed,1261
+248 Abbotsford Road, Brisbane,null,Failed,1233
+Karmelitska 2, Lesser Town, Prague,null,Failed,1166
+300 Long Beach Boulevard, Long Beach,CA,null,Failed,1136
+135 East Olive Avenue, Burbank,CA,null,Failed,1173
+3419 Via Lido, Newport Beach,CA,null,Failed,1207
+711 East Ball Road #100, Anaheim,CA,null,Failed,1188
+2200 Powell Street, San Francisco,CA,null,Failed,1369
+1505 Main Street, Windsor,CO,null,Failed,1237
+7972 Pines Boulevard, Pembroke Pines,FL,null,Failed,1146
+2091 Northeast 36th Street, Lighthouse Point,FL,null,Failed,1131
+1454 Northwest 78th Avenue, Doral,FL,null,Failed,1185
+Seybold, 36 Northeast 1st Street #407, Miami,FL,null,Failed,1194
+8306 Mills Drive, Miami,FL,null,Failed,1147
+400 Northwest 7th Avenue, Fort Lauderdale,FL,null,Failed,1158
+6555 North Powerline Road #410, Fort Lauderdale,FL,null,Failed,1177
+6710 Stirling Road, Hollywood,FL,null,Failed,4022
+2414, Fort Lauderdale,FL,null,Failed,1144
+2714 North University Drive, Sunrise,FL,null,Failed,1202
+5495 Jimmy Carter Boulevard, Norcross,GA,null,Failed,3701
+10719 Alpharetta Highway, Roswell,GA,null,Failed,1132
+3628 Satellite Boulevard Northwest, Duluth,GA,null,Failed,1207
+2400 Riverstone Boulevard, Canton,GA,null,Failed,1155
+918 Joe Frank Harris Parkway Southeast, Cartersville,GA,null,Failed,1258
+5220 Jimmy Lee Smith Parkway, Hiram,GA,null,Failed,1460
+1635 Old 41 Highway Northwest #112, Kennesaw,GA,null,Failed,1146
+1772 Jonesboro Road, McDonough,GA,null,Failed,1145
+675 Lakeview Parkway, Vernon Hills,IL,null,Failed,1174
+9249 Cicero Avenue, Oak Lawn,IL,null,Failed,1184
+15128 South La Grange Road, Orland Park,IL,null,Failed,1232
+1400 Centre Circle, Downers Grove,IL,null,Failed,1529
+757 East Lewis and Clark Parkway #814, Clarksville,IN,null,Failed,1340
+125 West South Street, Indianapolis,IN,null,Failed,1216
+1701 East Edgewood Avenue, Southport,IN,null,Failed,1498
+5868 East 71st Street, Indianapolis,IN,null,Failed,1388
+6401 Gateway Drive, Indianapolis,IN,null,Failed,1168
+303 West 80th Place, Merrillville,IN,null,Failed,4542
+1116 Ulrich Avenue, Louisville,KY,null,Failed,1187
+420 Columbia Street, Newport,KY,null,Failed,1250
+25 New Chardon Street, Boston,MA,null,Failed,1443
+1624 Ness Ave, Winnipeg MB,null,Failed,1262
+143 Rollins Avenue, Rockville,MD,null,Failed,1204
+808 Glen Eagles Court #1, Baltimore,MD,null,Failed,1232
+2351 Bellingham Drive, Troy,MI,null,Failed,1199
+7007 Metropolitan Parkway, Sterling Heights,MI,null,Failed,1163
+7550 22nd Avenue South, Minneapolis,MN,null,Failed,1153
+314 Lennon Drive, Wilmington,NC,null,Failed,1142
+4000 Atlantic Avenue, Raleigh,NC,null,Failed,1192
+1820 Harris Houston Road, Charlotte,NC,null,Failed,1188
+206 East 1st Street, Lowell,NC,null,Failed,1220
+2217 Matthews Township Parkway, Matthews,NC,null,Failed,1187
+254 Daniel Webster Highway #4, Nashua,NH,null,Failed,2212
+95 Eddy Road, Manchester,NH,null,Failed,1208
+33 East Midland Avenue, Paramus,NJ,null,Failed,1195
+322 West 52nd Street, New York,NY,null,Failed,1202
+4040 Erie Street, Willoughby,OH,null,Failed,1220
+395 Federal Street, Pittsburgh,PA,null,Failed,1165
+Pittsburgh,PA,null,Failed,1157
+300 Bristol Pike, Croydon,PA,null,Failed,1400
+620 Allendale Road #125, King of Prussia,PA,null,Failed,1191
+820 67th Avenue North, Myrtle Beach,SC,null,Failed,1176
+601 College Street, Clarksville,TN,null,Failed,1844
+301 Northcreek Boulevard, Goodlettsville,TN,null,Failed,1218
+1801 Memorial Boulevard, Murfreesboro,TN,null,Failed,1302
+16 Arcade, Nashville,TN,null,Failed,1141
+4112 Nolensville Pike, Nashville,TN,null,Failed,1183
+9201 Warren Parkway #200, Frisco,TX,null,Failed,1168
+3501 Gus Thomasson Road #35, Mesquite,TX,null,Failed,1195
+400 North Ervay Street, Dallas,TX,null,Failed,1185
+13770 Noel Road, Dallas,TX,null,Failed,2563
+1975 Ballpark Way, Arlington,TX,null,Failed,1186
+4401 Little Road #550, Arlington,TX,null,Failed,1224
+5358 Wedgmont Circle North, Fort Worth,TX,null,Failed,1224
+8723 Bedford Euless Road, Hurst,TX,null,Failed,1160
+5740 West Little York Road, Houston,TX,null,Failed,1237
+9600 Westheimer Road, Houston,TX,null,Failed,1191
+12955 Bow Willow, Houston,TX,null,Failed,1202
+17119 Red Oak Drive, Houston,TX,null,Failed,1140
+3740 Greenbriar Street, Houston,TX,null,Failed,1438
+1600 2nd Street, Seabrook,TX,null,Failed,31486
+823 Congress Avenue #150, Austin,TX,null,Failed,1168
+101 Broadway East, Seattle,WA,null,Failed,1192
+5200 West Oklahoma Avenue, Milwaukee,WI,null,Failed,1177
+4800 Converse Avenue, Cheyenne,WY,null,Failed,1227
+SHS quadra 5, Bloco E., Brasilia,null,Failed,1201
+Carretera Cancun-Chetumal KM 22, Cancun,null,Failed,1175
+Carrera 54 No. 49 - 31, Medellin,null,Failed,1147
+Hamburg,null,Failed,1223
+Cape Town,null,Failed,1226
+Johannesburg,null,Failed,1154
+Melbourne,null,Failed,1244
+Brisbane,null,Failed,1133
+Geneva,null,Failed,1146
+Clarksville,null,Failed,1152
+Mentor,null,Failed,1225
+Fort Worth,null,Failed,1237
+Loveland,null,Failed,1106
+150 Kennedy Road, Hong Kong,null,Failed,1178
+Merrillville,null,Failed,1216
+Seattle,null,Failed,1225
+Brasil,null,Failed,1173
+Manitoba,null,Failed,1150
+Colorado,null,Failed,1146
+75-85 York Street, Melbourne,null,Failed,1178
+Utah,null,Failed,1185
+Georgia,null,Failed,1165
+Michigan,null,Failed,1178
+Virginia,null,Failed,3024
+Houston,null,Failed,1319
+Louisiana,null,Failed,1179
+Tennessee,null,Failed,1192
+Westminster,null,Failed,1142
+Stafford,null,Failed,1221
+Indiana,null,Failed,1233
+New Jersey,null,Failed,1179
+Pennsylvania,null,Failed,1138
+30 Katharinenstr, Hamburg,null,Failed,1227
+Wyoming,null,Failed,1506
+450 Lexington Avenue, New York,NY,null,Failed,1237
+450 West 14th Avenue, Denver,CO,null,Failed,1236
+Mexico,null,Failed,1152

@@ -252,7 +252,7 @@ void initiateSNOWtoSMAX(exeUseCase) async {
       await snowToSMAXExecute_PM();
       break;
     case 'Location-cmn_location':
-      await snowToSMAXExecute_Location('create');
+      //await snowToSMAXExecute_Location('create');
       await snowToSMAXExecute_Location('update');
       break;
     default:
@@ -518,7 +518,6 @@ void snowToSMAXExecute_IM() async {
 
 void snowToSMAXExecute_Location(op) async {
   logWriter.writeStatusInit();
-  var serviceCode;
   var auth = 'Basic ' +
       base64Encode(utf8.encode('${snowConfig.uname}:${snowConfig.password}'));
 
@@ -541,18 +540,26 @@ void snowToSMAXExecute_Location(op) async {
         processedRecords.snowId = '${item['name']}';
         //logger.i('${item['number']} ${item['state']} ${item['impact']}');
 
-        logger.i('Location code ${serviceCode}');
         logger.i('Processing ticket ${item['name']}');
         logWriter.writeLog(logFileName, 'SMAX Bulk Create', 'INFO',
             'Processing ticket ${item['name']}');
         var tType = '';
         var parentLoc = '';
+        var smaxLocId = '';
 
         if (op == 'update' && item['parent']['value'] != null) {
           try {
             logger.i('${item['parent']['value']}');
+            smaxLocId = await getSMAXParentLoc(
+                item['name'], smaxConfig.authCookie, 'SMAX');
             parentLoc = await getSMAXParentLoc(
-                item['parent']['value'], smaxConfig.authCookie);
+                item['parent']['value'], smaxConfig.authCookie, 'SNOW');
+            logger
+                .i('Location code for ${item['parent']['value']} ${parentLoc}');
+            logger.i('SMAX Location Id ${item['name']} ${smaxLocId}');
+            if (parentLoc != '' && smaxLocId == ' ') {
+              logger.e(item['name'], item['parent']['value']);
+            }
           } catch (e) {
             parentLoc = '';
           }
@@ -592,7 +599,7 @@ void snowToSMAXExecute_Location(op) async {
                 'entity_type': '${smaxConfig.smaxEntity}',
                 'properties': {
                   'LocationType': '${tType}',
-                  'Name': '${item['name']}',
+                  'Id': '${smaxLocId}',
                   'ParentLocation': '$parentLoc'
                 }
               }
@@ -842,8 +849,13 @@ Future<String> getSMAXService(sService, auth) async {
   }
 }
 
-Future<String> getSMAXParentLoc(sLoc, auth) async {
-  var snowLoc = await getSNOWServiceName(sLoc);
+Future<String> getSMAXParentLoc(sLoc, auth, systemToQuery) async {
+  var snowLoc = '';
+  if (systemToQuery == 'SNOW') {
+    snowLoc = await getSNOWLocationName(sLoc);
+  } else {
+    snowLoc = sLoc;
+  }
   if (snowLoc != null) {
     //var response;
     var serviceUrl =
@@ -862,9 +874,10 @@ Future<String> getSMAXParentLoc(sLoc, auth) async {
             'https://${smaxConfig.hostName}/rest/${smaxConfig.tenantId}${serviceUrl}');
         var smaxLocationResponse =
             jsonDecode(await response.transform(utf8.decoder).join());
-        logger.i(smaxLocationResponse['meta']['completion_status']);
+        //logger.i(smaxLocationResponse['meta']['completion_status']);
         if (smaxLocationResponse['meta']['completion_status'] == 'OK' &&
             smaxLocationResponse['meta']['total_count'] != 0) {
+          //logger.i(smaxLocationResponse['entities'][0]['properties']['Id']);
           return smaxLocationResponse['entities'][0]['properties']['Id'];
         } else {
           return '';
@@ -897,8 +910,7 @@ Future<String> getSMAXCategory(sCategory, auth) async {
           .set('Cookie', 'LWSSO_COOKIE_KEY=${smaxConfig.authCookie}');
       var response = await request.close();
       if (response.statusCode == 200) {
-        logger.i(
-            'https://${smaxConfig.hostName}/rest/${smaxConfig.tenantId}${serviceUrl}');
+        //logger.i('https://${smaxConfig.hostName}/rest/${smaxConfig.tenantId}${serviceUrl}');
         var smaxGetServiceResponse =
             jsonDecode(await response.transform(utf8.decoder).join());
         logger.i(smaxGetServiceResponse['meta']['completion_status']);
@@ -931,6 +943,26 @@ Future<dynamic> getSNOWServiceName(snowServiceCode) async {
     if (r.statusCode == 200) {
       var snowResponse = jsonDecode(r.body);
       logger.i(snowResponse['result']['name']);
+      return snowResponse['result']['name'];
+    } else {
+      return null;
+    }
+  } catch (e) {
+    logger.i(e.message);
+    return null;
+  }
+}
+
+Future<dynamic> getSNOWLocationName(snowLocCode) async {
+  try {
+    var auth = 'Basic ' +
+        base64Encode(utf8.encode('${snowConfig.uname}:${snowConfig.password}'));
+    var r = await http.get(
+        'https://${snowConfig.hostName}/api/now/table/cmn_location/${snowLocCode}',
+        headers: <String, String>{'authorization': auth});
+    if (r.statusCode == 200) {
+      var snowResponse = jsonDecode(r.body);
+      //logger.i(snowResponse['result']['name']);
       return snowResponse['result']['name'];
     } else {
       return null;
