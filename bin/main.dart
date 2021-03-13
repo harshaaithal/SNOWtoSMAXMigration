@@ -8,6 +8,7 @@ import 'smax_user.dart';
 import 'mongoDB.dart';
 
 import 'package:logger/logger.dart';
+import 'package:universal_html/html.dart' as html;
 
 final logger = Logger(
     printer: PrettyPrinter(
@@ -255,6 +256,12 @@ void initiateSNOWtoSMAX(exeUseCase) async {
       //await snowToSMAXExecute_Location('create');
       await snowToSMAXExecute_Location('update');
       break;
+    case 'Company-core_company':
+      await snowToSMAXExecute_Company();
+      break;
+    case 'Article-kb_knowledge':
+      await snowToSMAXExecute_Article();
+      break;
     default:
       logger.e('No use case or an Invalid use case provided');
   }
@@ -498,6 +505,127 @@ void snowToSMAXExecute_IM() async {
                 'DetectedEntities': '{\'complexTypeProperties\':[]}',
                 'UserOptions':
                     '{\'complexTypeProperties\':[{\'properties\':{}}]}'
+              }
+            }
+          ],
+          'operation': 'CREATE'
+        };
+        logWriter.writeLog(
+            logFileName, 'SMAX Bulk Create', 'INFO', 'JSON\n $imPayload');
+        await sendToSMAX(json.encode(imPayload), 'ems');
+      }
+    }
+    //logger.i(r.statusCode);
+    //logger.i(r.body);
+
+  } catch (e) {
+    logWriter.writeLog(logFileName, 'SNOW', 'ERROR', 'Error:${e.toString()}');
+  }
+}
+
+void snowToSMAXExecute_Company() async {
+  logWriter.writeStatusInit();
+  var auth = 'Basic ' +
+      base64Encode(utf8.encode('${snowConfig.uname}:${snowConfig.password}'));
+
+  try {
+    var r = await http.get('${snowConfig.endpointUrl}',
+        headers: <String, String>{'authorization': auth});
+    if (r.statusCode != 200) {
+      logWriter.writeLog(
+          logFileName, 'SNOW', 'ERROR', 'Error:${r.statusCode} ${r.body}');
+    } else {
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
+          'SNOW Fetch Success:${r.statusCode} ${r.body}');
+      var snowResponse = jsonDecode(r.body);
+      //logger.i(snowResponse['result'].length );
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
+          "Fetched :${snowResponse['result'].length} tickets");
+      logger.i(
+          "Fetched :${snowResponse['result'].length} tickets (${snowConfig.endpointUrl})");
+      for (var item in snowResponse['result']) {
+        processedRecords.snowId = '${item['name']}';
+        //logger.i('${item['number']} ${item['state']} ${item['impact']}');
+        logger.i('Processing ticket ${item['name']}');
+        logWriter.writeLog(logFileName, 'SMAX Bulk Create', 'INFO',
+            'Processing ticket ${item['name']}');
+        var vendorType = '';
+        if (item['vendor'] == 'true') {
+          vendorType = 'CompanyTypeVendor';
+        } else {
+          vendorType = 'CompanyTypeManufacturer';
+        }
+        var imPayload = {
+          'entities': [
+            {
+              'entity_type': 'Company',
+              'properties': {
+                'DisplayLabel': '${item['name']}',
+                'Code': '${item['stock_symbol']}',
+                'CompanyType': '$vendorType',
+                'Website': '${item['website']}',
+                'Phone': '${item['phone']}',
+                'Fax': '${item['fax_phone']}'
+              }
+            }
+          ],
+          'operation': 'CREATE'
+        };
+        logWriter.writeLog(
+            logFileName, 'SMAX Bulk Create', 'INFO', 'JSON\n $imPayload');
+        await sendToSMAX(json.encode(imPayload), 'ems');
+      }
+    }
+    //logger.i(r.statusCode);
+    //logger.i(r.body);
+
+  } catch (e) {
+    logWriter.writeLog(logFileName, 'SNOW', 'ERROR', 'Error:${e.toString()}');
+  }
+}
+
+void snowToSMAXExecute_Article() async {
+  logWriter.writeStatusInit();
+  var auth = 'Basic ' +
+      base64Encode(utf8.encode('${snowConfig.uname}:${snowConfig.password}'));
+
+  try {
+    var r = await http.get('${snowConfig.endpointUrl}',
+        headers: <String, String>{'authorization': auth});
+    if (r.statusCode != 200) {
+      logWriter.writeLog(
+          logFileName, 'SNOW', 'ERROR', 'Error:${r.statusCode} ${r.body}');
+    } else {
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
+          'SNOW Fetch Success:${r.statusCode} ${r.body}');
+      var snowResponse = jsonDecode(r.body);
+      //logger.i(snowResponse['result'].length );
+      logWriter.writeLog(logFileName, 'SNOW', 'INFO',
+          "Fetched :${snowResponse['result'].length} tickets");
+      logger.i(
+          "Fetched :${snowResponse['result'].length} tickets (${snowConfig.endpointUrl})");
+      for (var item in snowResponse['result']) {
+        processedRecords.snowId = '${item['short_description']}';
+        //logger.i('${item['number']} ${item['state']} ${item['impact']}');
+        logger.i('Processing ticket ${item['short_description']}');
+        logWriter.writeLog(logFileName, 'SMAX Bulk Create', 'INFO',
+            'Processing ticket ${item['short_description']}');
+        var categoryCode = '';
+        categoryCode = await getSMAXCategory(item['category'], auth);
+        logger.i(
+            'Category code for category from SNOW ${item['category']} is ${categoryCode} ');
+        var txtHtnl =
+            item['text'].toString().replaceAll(String.fromCharCode(160), ' ');
+        logger.i(txtHtnl);
+        var imPayload = {
+          'entities': [
+            {
+              'entity_type': 'Article',
+              'properties': {
+                'Subtype': 'Article',
+                'Title': "${item['short_description']}",
+                'Content': '${txtHtnl}',
+                'Category': '$categoryCode'
               }
             }
           ],

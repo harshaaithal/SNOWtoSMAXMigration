@@ -1,6 +1,6 @@
 {
-    "LogFileName": "./log/SNOWtoSMAXLocation.log",
+    "LogFileName": "./log/SNOWtoSMAXArticle.log",
     "LogFileRotationEnable": true,
-    "SnowConfigFile":"./data/snow_location.json",
-    "SMAXConfigFile":"./data/smax_location.json"
+    "SnowConfigFile":"./data/snow_article.json",
+    "SMAXConfigFile":"./data/smax_article.json"
 }

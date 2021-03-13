@@ -1,0 +1,12 @@
+{
+    "Uname": "tenant_admin",
+    "Pword": "SMAXR0cks!",
+    "HostName":"us1-smax.saas.microfocus.com",
+    "TenantId":"598132864",
+    "EndopointURL": "",
+    "AuthURL":"",
+    "SmaxEntity": "Article",
+    "DefaultServiceCode":"",
+    "DefaultCategoryCode":"",
+    "CertFilePath":"./data/smax-saas.cer"
+}

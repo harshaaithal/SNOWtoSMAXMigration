@@ -1,0 +1,8 @@
+{
+    "Uname": "admin",
+    "Pword": "ElZ8a3gtJRHf",
+    "HostName":"dev19116.service-now.com",
+    "Query":"=manufacturer%2Cvendor%2Cvendor_type%2Cphone%2Cfax_phone%2Cname%2Cstock_symbol%2Cwebsite&sysparm_limit=10",
+    "EndopointURL": "https://dev102213.service-now.com/api/now/table/incident?sysparm_fields=number%2Cstate%2Cdescription%2Cshort_description%2Cimpact%2Curgency&sysparm_limit=100",
+    "ModuleName": "core_company"
+}
